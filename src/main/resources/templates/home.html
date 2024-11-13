@@ -15,12 +15,14 @@
 </head>
 <body>
     <div class="container">
-        <h1>
-            Welcome to home page
+        <h1 data-th-text="${name}">
+            <!-- Welcome to home page -->
         </h1>
         <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorum voluptatum quae amet optio adipisci voluptate, sint dolores minima consequuntur delectus, nihil sapiente consequatur praesentium saepe animi ducimus, esse architecto repellat a consectetur ipsum? Blanditiis repellendus eaque sint alias obcaecati molestiae magni quam quos voluptatibus assumenda deleniti voluptates, possimus et culpa?
+           Hello This is demo Lorem Text - <br/><span th:text="${paragraph}"></span> 
         </p>
+        <p>Refernce Link - </p>
+        <a th:href="${link}">Youtube Link</a>
     </div> 
 </body>
 </html>
