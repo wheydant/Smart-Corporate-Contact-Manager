@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
+
 @Controller
 public class PageController {
 
@@ -16,5 +17,21 @@ public class PageController {
         model.addAttribute("link", "https://youtu.be/SAqi7zmW1fY?si=8CpQ6drnVwMlMLYl");
         //This is basically name of view.
         return "home";
+    }
+
+    //About route
+
+    @RequestMapping("/about")
+    public String aboutPage(Model model) {
+        model.addAttribute("isSafe",false);
+        System.out.println("About page loading");
+        return "about";
+    }
+    
+    //services
+    @RequestMapping("/service")
+    public String servicePage() {
+        System.out.println("About page loading");
+        return "services";
     }
 }
