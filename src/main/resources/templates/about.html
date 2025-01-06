@@ -1,5 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="~{base::parent}">
-    <head></head>
-    <body></body>
+<html lang="en" th:replace="~{base::parent(~{::#content},~{::title}, ~{::script})}">
+    <head>
+        <title>About Page</title>
+    </head>
+    <body>
+        <div id="content">
+            <h1>About Page</h1>
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque deleniti ipsam harum consequuntur ut voluptatem? Earum, delectus, praesentium distinctio, repellat nihil rerum accusamus ipsa at nobis amet ipsum repudiandae soluta! Quibusdam, unde delectus. Exercitationem molestiae delectus quas molestias quisquam neque quibusdam fuga voluptates sequi. Adipisci obcaecati delectus fugiat totam a?</p>
+        </div>
+        <script>console.log("Hello from About")</script>
+        <script>console.log("This will also run coz of thymeleaf")</script>
+    </body>
 </html>
