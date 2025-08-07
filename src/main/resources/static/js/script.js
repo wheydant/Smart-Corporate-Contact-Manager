@@ -4,7 +4,8 @@ let currentTheme = getTheme();
 changeTheme();
 
 function changeTheme(){
-    // set to webpage
+    // Initialization
+    // adds a class to html tag
     document.querySelector('html').classList.add(currentTheme);
 
     // set listner for button
@@ -13,6 +14,7 @@ function changeTheme(){
     //change text
     changeThemeBtn.querySelector('span').textContent = currentTheme == 'light'?"dark":"light";
 
+    //Event listener
     changeThemeBtn.addEventListener("click", (event) =>{
         console.log('clicked');
         
@@ -45,6 +47,7 @@ function setTheme(theme){
 
 //get theme from local storage
 function getTheme(){
-    let theme = localStorage.getItem("theme")
+    let theme = localStorage.getItem("theme");
+    //If theme is not set in localStorage thus a preventive measure
     return theme?theme : "light";
 }

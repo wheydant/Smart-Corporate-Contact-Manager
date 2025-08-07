@@ -6,14 +6,15 @@ xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:replace="${title}"></title>
+    <title th:text="'SCCM : ' + ${title}">SCCM</title>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
-    <link rel="stylesheet" data-th-href="@{'/css/output.css'}"/>
-    <link rel="icon" type="image/png" href="/images/global-network.png" />
+    <link rel="icon" type="image/png" href="/images/SCCM_Logo.png" />
     <!-- font-awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- By writing our CSS at the end it overrides certain parts of Flowbite  -->
+    <link rel="stylesheet" data-th-href="@{'/css/output.css'}"/>
 </head>
-<body class="p-4 h-screen w-full dark:bg-gray-900 dark:text-white">
+<body class="h-screen w-full bg-gray-100 dark:bg-gray-900 dark:text-white">
     <!-- Common header -->
     <div th:replace="~{navbar :: navbar}"></div>
 

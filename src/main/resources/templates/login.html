@@ -1,12 +1,72 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="~{base::parent(~{::#content},~{::title}, ~{::script})}">
+<html lang="en" th:replace="~{base::parent(~{::#content},'Login', ~{::script})}">
     <head>
         <title>Login</title>
     </head>
     <body>
-        <div id="content">
-            <h1>Login Page</h1>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque deleniti ipsam harum consequuntur ut voluptatem? Earum, delectus, praesentium distinctio, repellat nihil rerum accusamus ipsa at nobis amet ipsum repudiandae soluta! Quibusdam, unde delectus. Exercitationem molestiae delectus quas molestias quisquam neque quibusdam fuga voluptates sequi. Adipisci obcaecati delectus fugiat totam a?</p>
+        <div id="content" class="mt-2">
+            <!-- Grid is very strong so basically we have divided grid in 12 columns -->
+            <div class="grid grid-cols-12">
+                <!-- This is a blank div which accounts for white space before our form helps to align it -->
+                <div class="md:col-span-2 lg:col-span-3 xl:col-span-4">
+                </div>
+                <!-- Specifying for all the screen sizes makes it dynamic -->
+                <!-- sm - [0-12-0], sm - [2-8-2], sm - [3-6-3], sm - [4-4-4] -->
+                <div class="col-span-12 md:col-span-8 lg:col-span-6 xl:col-span-4">
+                    <div class="w-full p-4 bg-white border-t-8 border-blue-700 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-blue-700">
+                        <!-- <div>
+                            <img class="rounded-t-lg" src="/images/Login_Background.jpg" alt="" />
+                        </div> -->
+                        <div>
+                            <img class="rounded-t-lg w-full h-60 object-cover" src="/images/Login_Banner.gif" alt="Login Banner" 
+                            onerror="this.onerror=null; this.src='/images/Login_Background.jpg';"
+                            />
+                        </div>
+                        <!-- Message here -->
+                        <div th:if="${param.error}" class="font-medium text-red-600 dark:text-red-400">
+                            Invalid username and password.</div>
+                        <div th:if="${param.logout}" class="font-medium text-green-600 dark:text-green-400">
+                            You have been logged out.</div>
+                        <div class="p-4">
+                            <form 
+                                class="space-y-6"
+                                th:action="@{/authenticate}"
+                                method="post"
+                            >
+                                <div>
+                                    <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Login Here</h5>
+                                    <p class="font-normal text-gray-500 dark:text-gray-300">Start managing all your contact in one place...</p>
+                                </div>
+                                <div>
+                                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
+                                    <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Enter here" required
+                                    />
+                                    <!-- Error if any -->
+                                    <!-- <p
+                                    th:if="${#fields.hasErrors('email')}" 
+                                    id="filled_error_help" class="mt-2 text-red-600 dark:text-red-400"><span class="font-medium">Oh, snapp!</span> <span th:errors = "*{email}">Some error message.</span>
+                                    </p> -->
+                                </div>
+                                <div>
+                                    <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                                    <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required 
+                                    />
+                                    <!-- Error if any -->
+                                    <!-- <p
+                                    th:if="${#fields.hasErrors('password')}" 
+                                    id="filled_error_help" class="mt-2 text-red-600 dark:text-red-400"><span class="font-medium">Oh, snapp!</span> <span th:errors = "*{password}">Some error message.</span>
+                                    </p> -->
+                                </div>
+                                <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login</button>
+                                <div
+                                class="font-medium text-gray-500 dark:text-gray-300">
+                                    Wrong Input? <button type = "reset" class="text-red-600 hover:underline dark:text-red-400">Rest Details</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div> 
+                </div>
+            </div>
         </div>
         <script>console.log("Hello from Login")</script>
     </body>

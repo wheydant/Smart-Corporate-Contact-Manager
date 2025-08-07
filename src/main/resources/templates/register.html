@@ -1,12 +1,106 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="~{base::parent(~{::#content},~{::title}, ~{::script})}">
+<html lang="en" th:replace="~{base::parent(~{::#content},'Sign Up', ~{::script})}">
     <head>
-        <title>Sign-in</title>
+        <title>Sign up</title>
     </head>
     <body>
-        <div id="content">
-            <h1>Sign-in</h1>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque deleniti ipsam harum consequuntur ut voluptatem? Earum, delectus, praesentium distinctio, repellat nihil rerum accusamus ipsa at nobis amet ipsum repudiandae soluta! Quibusdam, unde delectus. Exercitationem molestiae delectus quas molestias quisquam neque quibusdam fuga voluptates sequi. Adipisci obcaecati delectus fugiat totam a?</p>
+        <div id="content" class="mt-2">
+            <!-- Grid is very strong so basically we have divided grid in 12 columns -->
+            <div class="grid grid-cols-12">
+                <!-- This is a blank div which accounts for white space before our form helps to align it -->
+                <div class="md:col-span-2 lg:col-span-3 xl:col-span-4">
+                </div>
+                <!-- Specifying for all the screen sizes makes it dynamic -->
+                <!-- sm - [0-12-0], sm - [2-8-2], sm - [3-6-3], sm - [4-4-4] -->
+                <div class="col-span-12 md:col-span-8 lg:col-span-6 xl:col-span-4">
+                    <div class="w-full p-4 bg-white border-t-8 border-blue-700 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-blue-700">
+                        <!-- <div>
+                            <img class="rounded-t-lg" src="/images/Login_Background.jpg" alt="" />
+                        </div> -->
+                        <div>
+                            <img class="rounded-t-lg w-full h-60 object-cover" src="/images/Signup_banner.gif" alt="Login Banner" 
+                            onerror="this.onerror=null; this.src='/images/Login_Background.jpg';"/>
+                        </div>
+                        <!-- Message here -->
+                        <div th:replace="~{message::messageBox}"></div> 
+                        <div class="p-4">
+                            <form 
+                                class="space-y-6" 
+                                data-th-action="@{'/do-register'}" 
+                                method="post"
+                                data-th-object="${userForm}"
+                                novalidate
+                            >
+                                <div>
+                                    <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Signup Here</h5>
+                                    <p class="font-normal text-gray-500 dark:text-gray-300">Start managing all your contact in one place...</p>
+                                </div>
+                                <div>
+                                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                                    <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Enter here" required
+                                    th:field="*{name}" />
+                                    <!-- Error if any -->
+                                    <p
+                                    th:if="${#fields.hasErrors('name')}" 
+                                    id="filled_error_help" class="mt-2 text-red-600 dark:text-red-400"><span class="font-medium">Oh, snapp!</span> <span th:errors = "*{name}">Some error message.</span>
+                                    </p>
+                                </div>
+                                <div>
+                                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+                                    <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="name@company.com" required 
+                                    th:field="*{email}"/>
+                                    <!-- Error if any -->
+                                    <p
+                                    th:if="${#fields.hasErrors('email')}" 
+                                    id="filled_error_help" class="mt-2 text-red-600 dark:text-red-400"><span class="font-medium">Oh, snapp!</span> <span th:errors = "*{email}">Some error message.</span>
+                                    </p>
+                                </div>
+                                <div>
+                                    <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">New password</label>
+                                    <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required 
+                                    th:field="*{password}"/>
+                                    <!-- Error if any -->
+                                    <p
+                                    th:if="${#fields.hasErrors('password')}" 
+                                    id="filled_error_help" class="mt-2 text-red-600 dark:text-red-400"><span class="font-medium">Oh, snapp!</span> <span th:errors = "*{password}">Some error message.</span>
+                                    </p>
+                                </div>
+                                <div>
+                                    <label for="number" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contact Number</label>
+                                    <input type="text" name="number" id="number" placeholder="Enter here" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required 
+                                    th:field="*{phoneNumber}"/>
+                                    <!-- Error if any -->
+                                    <p
+                                    th:if="${#fields.hasErrors('phoneNumber')}" 
+                                    id="filled_error_help" class="mt-2 text-red-600 dark:text-red-400"><span class="font-medium">Oh, snapp!</span> <span th:errors = "*{phoneNumber}">Some error message.</span>
+                                    </p>
+                                </div>
+                                <div>
+                                    <label for="company" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company Name</label>
+                                    <input type="text" name="company" id="company" placeholder="Enter your organization" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required 
+                                    th:field="*{organization}"/>
+                                    <!-- Error if any -->
+                                    <p
+                                    th:if="${#fields.hasErrors('organization')}" 
+                                    id="filled_error_help" class="mt-2 text-red-600 dark:text-red-400"><span class="font-medium">Oh, snapp!</span> <span th:errors = "*{organization}">Some error message.</span>
+                                    </p>
+                                </div>
+                                <div>
+                                    <label for="about" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Write something about yourself</label>
+                                    <textarea id="about" rows = "6" placeholder="Write your thoughts here" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                    th:field="*{about}"></textarea>
+                                </div>
+                                <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Sign-Up</button>
+                                <div
+                                th:if="${!#fields.hasErrors()}"
+                                class="font-medium text-gray-500 dark:text-gray-300">
+                                    Wrong Input? <button type = "reset" class="text-red-600 hover:underline dark:text-red-400">Rest Details</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div> 
+                </div>
+            </div>
         </div>
         <script>console.log("Hello from Sign-in")</script>
     </body>
