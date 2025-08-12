@@ -156,7 +156,7 @@ iii. Refer Fragments 7 & 8 points
 
 ### Dark Mode Toggle
 
-- Using Font [awesome](https://fontawesome.com/) for icons.
+- Using Font [awesome](https://fontawesome.com/) for icons/logo.
     
 - We can use components directly without downloading using [cdn](https://cdnjs.com/libraries/font-awesome) link.
     
@@ -639,13 +639,129 @@ Doing the later one for temporary fix
 
 `httpSecurity.csrf(AbstractHttpConfigurer::disable);` AbstractHttpConfigurer has a method to disable csrf we are simply using method reference.
 
+## Login with google
 
+[OAuth2 client](https://mvnrepository.com/artifact/org.springframework.security/spring-security-oauth2-client/6.5.0) dependency needs to be added in the project, it already has spring security in it thus if we simply add OAuth 2 still we could configure everything regarding security.
 
+We need to add providers client id and client secret.
+For [Google](https://console.cloud.google.com/welcome/new) > Create new project > API & Services > OAuth Consent screen > 
 
+Video steps are different the Dashboard looks different but isn't hard to go around instead of credential we have overview > Create OAuth client.
+>**Note :** AUthorized redirect URI specifies on which URL user will be redirected once authorized. This is predefined URL by springboot and if any change leads to mismatch `http://localhost:8081/login/oauth2/code/google`
 
+Thus after creation client id and client secret is generated. use it in application.properties
+```properties
+spring.security.oauth2.client.registration.google.client-name=google
+spring.security.oauth2.client.registration.google.client-id={Client Id}
+spring.security.oauth2.client.registration.google.client-secret={Client Secret}
+spring.security.oauth2.client.registration.google.scope=email,profile
+```
+Adding the Oauth2 in security config will enable the google login
+```java
+    //Default login page
+    httpSecurity.oauth2Login(Customizer.withDefaults());
+```
+Login Logout functionality works just fine.
+Basically when default login google button is triggered it redirects to [/oauth2/authorization/google](http://localhost:8081/oauth2/authorization/google)
 
+Adding Social Buttons on login.html and assigning above href to the buttom
+>**Note :** Shorthand to add div with class `div.social-buttons-container`
 
+### User Configuration
 
+Using our custom login page security Config file will include - 
+```java
+    @Autowired
+    private OAuthAuthenticationSuccessHandler handler;
+    //Customized page
+    httpSecurity.oauth2Login(oAuth -> {
+        oAuth.loginPage("/login")
+        .successHandler(handler)
+        ;
+    });
+```
+We Create OAuthAuthenticationSuccessHandler to store data coming from the OAuth into the DB and to configure successURL. Create new class under config itself > OAuthAuthenticationSuccessHandler.java and implement AuthenticationSuccessHandler where we have to implement onAuthenticationSuccess method. 
+>**Note :** `authentication.getPrincipal()` holds the user data and `user.getAttributes()` store all the attributes we get from the login Provider. 
+
+```java
+@Component
+public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+
+    @Autowired
+    private UserRepo userRepo;
+
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+            Authentication authentication) throws IOException, ServletException {
+                //Save Data before redirect
+                DefaultOAuth2User user = (DefaultOAuth2User)authentication.getPrincipal();
+
+                String email=user.getAttribute("email").toString();
+                String name=user.getAttribute("name").toString();
+                String picture=user.getAttribute("picture").toString();
+
+                User dbUser = new User();
+                dbUser.setEmail(email);
+                dbUser.setName(name);
+                dbUser.setProfilePic(picture);
+                dbUser.setPassword("password");
+                dbUser.setUserId(UUID.randomUUID().toString());
+                dbUser.setProvider(Providers.GOOGLE);
+                dbUser.setEnabled(true);
+                dbUser.setEmailVerified(true);
+                dbUser.setProviderUserId(user.getName());
+                dbUser.setRoleList(List.of(AppConstants.ROLE_USER));
+                dbUser.setAbout("User created using google login");
+
+                User existingUser = userRepo.findByEmail(email).orElse(null);
+                if(existingUser == null){
+                    userRepo.save(dbUser);
+                }
+
+                //Using response
+                // response.sendRedirect("/user/dashboard");
+                //Using RedirectStrategy
+                new DefaultRedirectStrategy().sendRedirect(request, response, "/user/dashboard");
+    }
+}
+```
+We can redirect user either by using response or using RedirectStrategy() which is good practice.
+
+## Login with Github
+
+Go to [https://github.com/settings/developers](https://github.com/settings/developers) add homepage URL - [http://localhost:8081](http://localhost:8081/) same done with google and callback URL as [http://localhost:8081/login/oauth2/code/github](http://localhost:8081/login/oauth2/code/github).
+Uncheck webhook option. Account Permission > Profile > read and write. Account Permission > Email Permission > Only read.
+After app creation we get client id and can generate client secret.
+
+Each provider gives different attributes check the attributes using - 
+```java
+    oAuthUser.getAttributes().forEach((key, value) ->{
+        logger.info("{} => {}", key, value);
+    });
+```
+
+## Using Logger
+
+Implement logger from `org.slf4j.Logger`. Create a logger which is class specific and use logger.info() to display data like System.out.println().
+
+```java
+    Logger logger = LoggerFactory.getLogger(OAuthAuthenticationSuccessHandler.class);
+
+    logger.info("OAuthAuthenticationSuccessHandler");
+    logger.info(user.getName());
+
+    user.getAttributes().forEach((key, value) ->{
+        logger.info("{} => {}", key, value);
+    });
+
+    logger.info(user.getAuthorities().toString()); -> this gives all the authorities we checked while on google cloud
+
+    User existingUser = userRepo.findByEmail(email).orElse(null);
+    if(existingUser == null){
+        userRepo.save(dbUser);
+        logger.info("User saved: " + email);
+    }
+```
 
 
 

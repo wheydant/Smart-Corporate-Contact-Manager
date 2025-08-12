@@ -5,11 +5,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import com.sccm.services.implementation.SecurityCustomUserDetailService;
 
@@ -36,6 +38,9 @@ public class SecurityConfig {
 
     @Autowired
     private SecurityCustomUserDetailService userDetailService;
+
+    @Autowired
+    private OAuthAuthenticationSuccessHandler handler;
 
     //Configuration of authenticator provider
     @Bean
@@ -104,6 +109,17 @@ public class SecurityConfig {
             //By default /logout uses get request.
             logoutForm.logoutUrl("/logout")
             .logoutSuccessUrl("/home");
+        });
+
+        //OAuth config
+        //Default login page
+        // httpSecurity.oauth2Login(Customizer.withDefaults());
+
+        //Customized page
+        httpSecurity.oauth2Login(oAuth -> {
+            oAuth.loginPage("/login")
+            .successHandler(handler)
+            ;
         });
 
 
