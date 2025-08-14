@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <p>This is user Profile</p>
-</body>
+<html lang="en" th:replace="~{base::parent(~{::#content},${loggedInUser.name}, ~{::script})}">
+    <head>
+        <title th:text="${loggedInUser.name}+' | SCCM'">Profile Page</title>
+    </head>
+    <body>
+        <div id="content">
+            <h1>Profile Page</h1>
+            <p th:text="${loggedInUser}"></p>
+        </div>
+        <script>console.log("Hello from Profile Page")</script>
+    </body>
 </html>

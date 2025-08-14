@@ -112,7 +112,7 @@ public class PageController {
         user.setPhoneNumber(userForm.getPhoneNumber());
         user.setOrganization(userForm.getOrganization());
         user.setAbout(userForm.getAbout());
-        user.setProfilePic("src\\main\\resources\\static\\images\\profile.png");
+        user.setProfilePic("/images/profile.png");
         User savedUser = userService.saveUser(user);
 
         System.out.println("User Saved !");

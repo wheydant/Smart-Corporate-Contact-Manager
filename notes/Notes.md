@@ -763,7 +763,90 @@ Implement logger from `org.slf4j.Logger`. Create a logger which is class specifi
     }
 ```
 
+## Fetching User details post login
 
+We can inject Authentication in request mapping. Create a Helper class inside sccm.helpers which will have function to fetch username/user email.
+
+```java
+    @RequestMapping(value="/profile", method=RequestMethod.GET)
+    public String userProfile(Authentication authentication) {
+        String name = getEmailOfLoggedInUser(authentication);
+```
+
+In Helper class, refer OAuthAuthenticationSuccessHandler how we extracted data to store in DB.
+```java
+public class Helper {
+    public static String getEmailOfLoggedInUser(Authentication authentication){
+
+        //Provider logic
+        if(authentication instanceof OAuth2AuthenticationToken){
+            var oAuth2AuthenticationToken = (OAuth2AuthenticationToken)authentication;
+
+            var clientId = oAuth2AuthenticationToken.getAuthorizedClientRegistrationId();
+
+            var oAuth2User = (OAuth2User)authentication.getPrincipal();
+            String username = "";
+
+            //Google
+            if(clientId.equalsIgnoreCase("google")){
+                username = oAuth2User.getAttribute("email").toString();
+            }
+            //Github
+            else if(clientId.equalsIgnoreCase("github")){
+                username = oAuth2User.getAttribute("email") != null ? oAuth2User.getAttribute("email").toString() : oAuth2User.getAttribute("login").toString() + "@gmail.com";
+            }
+
+            return username;
+        }else{
+            //simple
+            return authentication.getName();
+        }
+    }
+}
+```
+
+We have fetched the email so we need a method to fetch user from db with this email id. Add method getUserByEmail UserService `User getUserByEmail(String email);` and add it's implementation in UserServiceImpl
+```java
+    @Override
+    public User getUserByEmail(String email) {
+        return userRepo.findByEmail(email).orElse(null);
+    }
+```
+
+Now either we can do 2 things just add the userDetail in one requestMapping or add it in every requestMapping and we can access it if user is logged in else it would be null. Thus we create RootController inside sccm.controller and Annotate it with `@ControllerAdvice` and make a method which will perform all the fetching and annotating it with `@ModelAttribute` which make this method common to all the models in every requestMapping.
+
+```java
+@ControllerAdvice
+public class RootController {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Autowired
+    private UserService userService;
+    
+    @ModelAttribute
+    public void addLoggedInUserInformation(Model model, Authentication authentication){
+        //If user is not logged in
+        if(authentication == null) return;
+        logger.info("Adding logged in user info to the model");
+        String userEmail = getEmailOfLoggedInUser(authentication);
+        User user = userService.getUserByEmail(userEmail);
+        model.addAttribute("loggedInUser", user);
+    }
+}
+```
+
+Access the data in any html using `<h1 th:text="${loggedInUser.name}"></h1>`.
+
+## Dashboard & Profile page
+
+We separated our base.html on the basis of loggedInUser. And added new Nav bar + Side bar from flowbite used help of claude to make UI uniform.
+
+```html
+<!-- if user is logged in -->
+<body th:if="${loggedInUser}">
+<!-- if user is not logged in -->
+<body th:unless="${loggedInUser}">
+```
 
 
 
@@ -794,3 +877,5 @@ Implement logger from `org.slf4j.Logger`. Create a logger which is class specifi
 16. @Bean - An instance of a class managed by the Spring container.
 17. @Configuration - The @Configuration annotation in Spring Boot signifies that a class is a source of bean definitions. When Spring encounters a class annotated with @Configuration, it understands that this class will define and configure various components (beans) that Spring will manage throughout the application's lifecycle. Methods within a @Configuration class that are annotated with @Bean will create and return instances of these components, making them available for injection and use by other parts of the application. Essentially, @Configuration classes act as the blueprint for how Spring should assemble and manage the application's components.
 18. @Autowired - The @Autowired annotation in the Spring Framework facilitates automatic dependency injection. It instructs the Spring IoC (Inversion of Control) container to automatically resolve and inject collaborating beans into other beans. It is used when using components in a bean.
+19. @ControllerAdvice - Root controller everything written in this will be transferred to all the controllers.
+20. @ModelAttribute - All the models under the controller will get access to the model attribute mentioned in it.

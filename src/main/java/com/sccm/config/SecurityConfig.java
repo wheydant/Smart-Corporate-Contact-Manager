@@ -77,7 +77,7 @@ public class SecurityConfig {
             // Changed from successForwardUrl defaultSuccessUrl perform client side rendering which is better for login 
             // .successForwardUrl("/user/dashboard")
             //In successForwardUrl we use server side which makes the form to resubmit it again which causes error
-            .defaultSuccessUrl("/user/dashboard", true)  
+            .defaultSuccessUrl("/user/profile", true)  
             .failureUrl("/login?error=true")
             .usernameParameter("name")
             .passwordParameter("password")

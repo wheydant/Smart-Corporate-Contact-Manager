@@ -102,7 +102,7 @@ public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessH
                 //Using response
                 // response.sendRedirect("/user/dashboard");
                 //Using RedirectStrategy
-                new DefaultRedirectStrategy().sendRedirect(request, response, "/user/dashboard");
+                new DefaultRedirectStrategy().sendRedirect(request, response, "/user/profile");
     }
 
 }

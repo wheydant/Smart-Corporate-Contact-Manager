@@ -1,31 +1,72 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<html lang="en"
-th:fragment="parent(content, title, script)"
-xmlns="http://www.w3.org/1999/xhtml"
-xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html
+  lang="en"
+  th:fragment="parent(content, title, script)"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title th:text="'SCCM : ' + ${title}">SCCM</title>
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"
+      rel="stylesheet"
+    />
     <link rel="icon" type="image/png" href="/images/SCCM_Logo.png" />
     <!-- font-awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <!-- By writing our CSS at the end it overrides certain parts of Flowbite  -->
-    <link rel="stylesheet" data-th-href="@{'/css/output.css'}"/>
-</head>
-<body class="h-screen w-full bg-gray-100 dark:bg-gray-900 dark:text-white">
-    <!-- Common header -->
-    <div th:replace="~{navbar :: navbar}"></div>
-
-    <div>
-        <section th:replace="${content}"></section>
+    <link rel="stylesheet" data-th-href="@{'/css/output.css'}" />
+  </head>
+  
+  <!-- LOGGED IN USER LAYOUT -->
+  <body th:if="${loggedInUser}" class="bg-gray-100 dark:bg-gray-900 dark:text-white">
+    <!-- User Navbar with Sidebar -->
+    <div th:replace="~{user/sidenavbar :: sidenavbar}"></div>
+    
+    <!-- Main Content Area -->
+    <div class="p-4 sm:ml-64 pt-20">
+      <section th:replace="${content}"></section>
     </div>
     
-
-    <footer>This is Footer</footer>
+    <!-- Footer for logged in users -->
+    <footer class="sm:ml-64 mt-8 p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+      <div class="text-center text-sm text-gray-500 dark:text-gray-400">
+        © 2024 Smart Corporate Contact Manager. All rights reserved.
+      </div>
+    </footer>
+    
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
     <script th:replace="${script}"></script>
     <script th:src="@{'/js/script.js'}"></script>
-</body>
+  </body>
+  
+  <!-- NOT LOGGED IN USER LAYOUT -->
+  <body th:unless="${loggedInUser}" class="bg-gray-100 dark:bg-gray-900 dark:text-white">
+    <!-- Global Navbar -->
+    <div th:replace="~{navbar :: navbar}"></div>
+    
+    <!-- Main Content Area -->
+    <div class="pt-20">
+      <section th:replace="${content}"></section>
+    </div>
+    
+    <!-- Footer for public pages -->
+    <footer class="mt-8 p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+      <div class="text-center text-sm text-gray-500 dark:text-gray-400">
+        © 2024 Smart Corporate Contact Manager. All rights reserved.
+      </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    <script th:replace="${script}"></script>
+    <script th:src="@{'/js/script.js'}"></script>
+  </body>
 </html>
