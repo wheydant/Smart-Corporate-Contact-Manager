@@ -848,8 +848,238 @@ We separated our base.html on the basis of loggedInUser. And added new Nav bar +
 <body th:unless="${loggedInUser}">
 ```
 
+## Add contact Form
+
+Create ContactController add a view add_contact.html, upload image was little tricky. ` rounded-lg` (full rounded corners) Changed to: `rounded-none rounded-e-lg` (only right side rounded). Helps to connect icon with input area.
+
+Create a Form entity to pass in as model to the form `ContactForm`. Added its model to the controller model and passed it as an object to our html template. 
+
+```java
+    @RequestMapping("/add")
+    public String addContactView(Model model){
+
+        ContactForm contactForm = new ContactForm();
+        // contactForm.setName("Test");
+        model.addAttribute("contactForm", contactForm);
+        return "user/add_contact";
+    }
+```
+
+In html we will use same route just change the method to post and use the object.
+`<form class="mt-2" th:action="@{'/user/contacts/add'}" th:object="${contactForm}" method="post">` And assign the variables to fields input parameters. `<input th:field="*{name}">` What it does is that it auto assign id, name and value field of that tag based on the variable as above field will automatically have id = "name", name = "name", value = <value of the name field>.
 
 
+### Processing Contacts
+
+Create `ContactRepo.java` in Repo folder so that data can be extracted and inserted from DB. 
+>**Note :** Custom query written in the Repo if column name doesn't exist in table so write a query to fetch the data. params - `:userId, @Param("userId") String userId`
+
+```java
+@Repository
+public interface ContactRepo extends JpaRepository<Contact, String>{
+
+    //Find contact by user
+    //Custom finder method
+    List<Contact> findByUser(User user);
+
+    //Custom function if we want to fetch on the basis of User id as user id is not present in the table
+    //Custom Query method
+    @Query("SELECT c FROM Contact c WHERE c.user.Id = :userId")
+    List<Contact> findByUserId(@Param("userId") String userId);
+}
+```
+
+Write interface for contactService declare all the methods related to contact. Write it's implementation contactServiceImpl class this is annotated with @Service.
+
+In controller add the contactForm models data to an contact entity and add it to DB using repo.
+
+>**Note :** Logged in user's data is fetched using `Authentication authentication` parameter and extracted using `String username = Helper.getEmailOfLoggedInUser(authentication);`
+
+```java
+    @Autowired // In protection ready application constructor should be used
+    private ContactService contactService;
+
+    @Autowired
+    private UserService userService;
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String saveContact(@ModelAttribute ContactForm contactForm, Authentication authentication){
+
+        //Process form data
+        // get data of root user
+        String username = Helper.getEmailOfLoggedInUser(authentication);
+
+        User user = userService.getUserByEmail(username);
+        //form --> contact
+        Contact contact = new Contact();
+
+        contact.setName(contactForm.getName());
+        contact.setFavorite(contactForm.getFavorite());
+        contact.setEmail(contactForm.getEmail());
+        contact.setPhoneNumber(contactForm.getPhoneNumber());
+        contact.setAddress(contactForm.getAddress());
+        contact.setDescription(contactForm.getDescription());
+        contact.setUser(user);
+        contact.setWebsiteLink(contactForm.getWebsiteLink());
+        contact.setLinkedInLink(contactForm.getLinkedInLink());
+        //save into DB
+        //Process form data
+
+        contactService.save(contact);
+        System.out.println(contact);
+        System.out.println(contactForm);
+        return "redirect:/user/contacts/add";
+    }
+```
+
+
+### Form validation
+
+Add validation tags on ContactForm
+```java
+    @NotBlank(message="Name is required")
+    private String name;
+
+    @NotBlank(message="Email is required")
+    @Email(message="Invalid Email Address")
+    private String email;
+
+    @NotBlank(message="Phone number is required")
+    @Pattern(regexp="^[0-9]{10}$", message="Invalid Phone Number")
+    private String phoneNumber;
+```
+
+Pass them to the controller using `public String saveContact(@Valid BindingResult result)` and `if(result.hasErrors()) return "user/add_contact";` in html display error using #fields where pass the name of the variable which is bind by the validation rule. Fetch the error message using `th:errors="*{name}"`
+
+```html
+    <!-- Error if any -->
+    <p
+      th:if="${#fields.hasErrors('name')}"
+      class="mt-2 text-red-600 dark:text-red-400"
+    >
+      <span class="font-medium">Oh, snapp!</span>
+      <span th:errors="*{name}">Some error message.</span>
+    </p>
+```
+
+Display Message, use `HttpSession session` as parameter we have already added Message entity using that will display message and display the message in the html using `<div th:replace="~{message::messageBox}"></div>`. Backend is already handled earlier
+
+```java
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String saveContact(@Valid @ModelAttribute ContactForm contactForm, BindingResult result, Authentication authentication, HttpSession session){
+        if(result.hasErrors()){
+            session.setAttribute("message", Messages.builder().content("Please correct the following errors").type(MessageType.red).build());
+            return "user/add_contact";
+        }
+    }
+```
+
+### Image handling
+
+Create account on [Cloudinary](https://cloudinary.com/) follow [Java Integration](https://cloudinary.com/documentation/java_integration) steps. Add dependency mentioned in the document. In application property add name key and secret from dashboard > api key.
+```
+cloudinary.cloud.name=
+cloudinary.api.key=
+cloudinary.api.secret=
+```
+
+In add_contact.html make form as `<form class="mt-2" th:action="@{'/user/contacts/add'}" th:object="${contactForm}" method="post" enctype="multipart/form-data">` enctype="multipart/form-data" makes our form ready to handle the image.
+
+Create ImageService and it's implementation to handle uploading image onto Cloudinary. In service add method uploadImage and getUrlFromPublicId. Its implementation is as followed.
+
+**Uploading Image** - 
+- `byte[] data = new byte[contactImg.getInputStream().available()];` creates a byte array of size of image.
+- `contactImg.getInputStream().read(data);` stores contactImg data onto our array.
+- Upload this array onto the Cloudinary variable with public_id i.e. name as filename(Generated using UUID) passed in the parameter. `cloudinary.uploader().upload(data, ObjectUtils.asMap("public_id", filename));`
+- Calls `getUrlFromPublicId(filename)` to generate a transformed URL for accessing the uploaded image.
+- Image upload is handled by `getUrlFromPublicId(filename)` after transforming the image to satisfy our requirements.
+- `.generate(publicId)` uploads the image and url extraction is done using `.url()`.
+
+>**Note :** Replacement of autowired with constructor is done as in below code.
+
+```java
+@Service
+public class ImageServiceImpl implements ImageService{
+
+    private Cloudinary cloudinary;
+
+    //Instead of autowired, constructor automatically injects the data
+    public ImageServiceImpl(Cloudinary cloudinary) {
+        this.cloudinary = cloudinary;
+    }    
+
+    @Override
+    public String uploadImage(MultipartFile contactImg, String filename) {
+        //upload image
+
+        try {
+            byte[] data = new byte[contactImg.getInputStream().available()];
+            contactImg.getInputStream().read(data);
+            cloudinary.uploader().upload(data, ObjectUtils.asMap(
+                "public_id", filename
+            ));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+
+        return this.getUrlFromPublicId(filename);
+    }
+
+    @Override
+    public String getUrlFromPublicId(String publicId){
+
+        return cloudinary
+        .url()
+        .transformation(
+            new Transformation<>()
+                .width(AppConstants.CONTACT_IMG_WIDTH)
+                .height(AppConstants.CONTACT_IMG_HEIGHT)
+                .crop(AppConstants.CONTACT_IMG_CROP)
+        )
+        .generate(publicId);
+    }
+}
+```
+
+We need our Cloudinary Object to have certain specifications at time of creation itself. Thus we create an AppConfig class inside `com.sccm.config`. This makes sure at the time of object creation itself name, key and secret get assigned to the object. `"${cloudinary.cloud.name}"` this fetches the value from application.property. ObjectUtils.asMap sets the properties inside the object.
+
+```java
+@Configuration
+public class AppConfig {
+
+    @Value("${cloudinary.cloud.name}")
+    private String cloudName;
+
+    @Value("${cloudinary.api.key}")
+    private String apiKey;
+
+    @Value("${cloudinary.api.secret}")
+    private String apiSecret;
+
+    @Bean
+    public Cloudinary cloudinary(){
+        return new Cloudinary(
+            ObjectUtils.asMap(
+                "cloud_name",cloudName ,
+                "api_key", apiKey,
+                "api_secret", apiSecret
+            )
+        );
+    }
+}
+```
+
+File url is captured in the ContactController and saved in the DB.
+
+```java
+    String fileName = UUID.randomUUID().toString();
+    String fileUrl = imageService.uploadImage(contactForm.getContactImg(), fileName);
+    contact.setPicture(fileUrl);
+    contact.setCloudinaryImagePublicId(fileName);
+    contactService.save(contact);
+```
 
 
 ## Important Annotations
@@ -873,9 +1103,10 @@ We separated our base.html on the basis of loggedInUser. And added new Nav bar +
 12. @ModelAttribute - Fetching model from the screen.
 13. @Component - The @Component annotation in Spring Boot is a core annotation used to mark a class as a Spring-managed component. Its primary function is to indicate that the annotated class should be automatically detected and registered as a Spring Bean within the Spring Inversion of Control (IoC) container. Basically specifying class as component gives us power to make it's object without implicitly declaring one.
 14. @Repository - The @Repository annotation in Spring Boot indicates that a class serves as a "repository" component in the application's persistence layer. It is a specialization of the more general @Component annotation and signifies that the annotated class is responsible for data access and manipulation operations, often interacting with a database or other data sources.
+15. @Query - Custom query written in the Repo if column name doesn't exist in table so write a query to fetch the data. `@Query("SELECT c FROM Contact c WHERE c.user.Id = :userId") List<Contact> findByUserId(@Param("userId") String userId);`
 15. @Builder.Default - Specifying it helps to build object using .builder with default values.
 16. @Bean - An instance of a class managed by the Spring container.
 17. @Configuration - The @Configuration annotation in Spring Boot signifies that a class is a source of bean definitions. When Spring encounters a class annotated with @Configuration, it understands that this class will define and configure various components (beans) that Spring will manage throughout the application's lifecycle. Methods within a @Configuration class that are annotated with @Bean will create and return instances of these components, making them available for injection and use by other parts of the application. Essentially, @Configuration classes act as the blueprint for how Spring should assemble and manage the application's components.
-18. @Autowired - The @Autowired annotation in the Spring Framework facilitates automatic dependency injection. It instructs the Spring IoC (Inversion of Control) container to automatically resolve and inject collaborating beans into other beans. It is used when using components in a bean.
+18. @Autowired - The @Autowired annotation in the Spring Framework facilitates automatic dependency injection. It instructs the Spring IoC (Inversion of Control) container to automatically resolve and inject collaborating beans into other beans. It is used when using components in a bean. In protection ready application constructor should be used
 19. @ControllerAdvice - Root controller everything written in this will be transferred to all the controllers.
 20. @ModelAttribute - All the models under the controller will get access to the model attribute mentioned in it.

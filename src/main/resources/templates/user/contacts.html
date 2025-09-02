@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  th:replace="~{base::parent(~{::#content},${loggedInUser.name}, ~{::script})}"
+>
+  <head>
+    <title th:text="${loggedInUser.name}+' | SCCM'">Profile Page</title>
+  </head>
+  <body>
+    <div id="content">
+        <div>
+          <div
+            class="card block bg-white rounded-lg shadow-sm dark:bg-gray-800 p-4"
+          >
+            <!-- GIF Banner -->
+            <div>
+              <img
+                class="rounded-t-lg w-full h-60 object-cover"
+                src="/images/Contact2.gif"
+                alt="Login Banner"
+                loading="lazy"
+                onerror="this.onerror=null; this.src='/images/Login_Background.jpg';"
+              />
+            </div>
+
+            <div class="contact-container">
+              <div class=" pl-5 pt-2 pb-2">
+                <h5
+                  class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+                >
+                  Your Contacts
+                </h5>
+                <p class="font-normal text-gray-500 dark:text-gray-300">
+                  View all your contacts here. Send a mail directly through this
+                  page...
+                </p>
+              </div>
+              <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <div
+                  class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4"
+                >
+                  <div class="pl-2">
+                    <button
+                      id="dropdownActionButton"
+                      data-dropdown-toggle="dropdownAction"
+                      class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                      type="button"
+                    >
+                      <span class="sr-only">Action button</span>
+                      Action
+                      <svg
+                        class="w-2.5 h-2.5 ms-2.5"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 10 6"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="m1 1 4 4 4-4"
+                        />
+                      </svg>
+                    </button>
+                    <!-- Dropdown menu -->
+                    <div
+                      id="dropdownAction"
+                      class="z-10 hidden bg-gray-100 divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600"
+                    >
+                      <ul
+                        class="py-1 text-sm text-gray-700 dark:text-gray-200"
+                        aria-labelledby="dropdownActionButton"
+                      >
+                        <li>
+                          <a
+                            href="#"
+                            class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white"
+                            >Reward</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="#"
+                            class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white"
+                            >Promote</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="#"
+                            class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white"
+                            >Activate account</a
+                          >
+                        </li>
+                      </ul>
+                      <div class="py-1">
+                        <a
+                          href="#"
+                          class="block px-4 py-2 text-sm text-gray-700 hover:bg-white dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                          >Delete User</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <label for="table-search" class="sr-only">Search</label>
+                  <div class="relative flex flex-row pr-2">
+                    <div
+                      class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none"
+                    >
+                      <svg
+                        class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                        />
+                      </svg>
+                    </div>
+                    <input
+                      type="text"
+                      id="table-search-users"
+                      class="block pl-8 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-full sm:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Search for users"
+                    />
+                  </div>
+                </div>
+                <div class="overflow-x-auto">
+                  <table
+                    class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 min-w-full"
+                  >
+                    <thead
+                      class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                    >
+                      <tr>
+                        <th scope="col" class="px-4 py-3 min-w-[200px]">Name</th>
+                        <th scope="col" class="px-4 py-3 min-w-[140px]">Phone</th>
+                        <th scope="col" class="px-4 py-3 min-w-[200px]">Links</th>
+                        <th scope="col" class="px-4 py-3 min-w-[120px]">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        th:object="${c}"
+                        th:each="c : ${contacts}"
+                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
+                      >
+                        <th
+                          scope="row"
+                          class="flex items-center px-4 py-4 text-gray-900 whitespace-nowrap dark:text-white min-w-[200px]"
+                        >
+                          <img
+                            class="w-10 h-10 rounded-full flex-shrink-0"
+                            th:src="@{*{picture}}"
+                            alt="Profile Image"
+                            onerror="this.onerror=null;this.src='/images/profile.png';"
+                          />
+                          <div class="ps-3 min-w-0 flex-1">
+                            <div class="flex items-center gap-2 flex-wrap">
+                              <div class="text-base font-semibold truncate" th:text="*{name}">
+                                Neil Sims
+                              </div>
+                              <i th:if="*{favorite}" class="fa-solid fa-heart text-red-500 text-sm"></i>
+                            </div>
+                            <div class="font-normal text-gray-500 truncate" th:text="*{email}">
+                              contact@sccm.com
+                            </div>
+                          </div>
+                        </th>
+
+                        <td class="px-4 py-4 min-w-[140px]">
+                          <div class="flex items-center gap-1 flex-nowrap">
+                            <i class="fa-solid fa-phone w-3 h-3 flex-shrink-0 text-gray-400"></i>
+                            <span class="text-sm truncate" th:text="*{phoneNumber}">+91 99999-99999</span>
+                          </div>
+                        </td>
+
+                        <td class="px-4 py-4 min-w-[200px]">
+                          <div class="space-y-1">
+                            <div th:if="*{websiteLink} != null and *{websiteLink} != ''">
+                              <a
+                                th:href="*{websiteLink}"
+                                target="_blank"
+                                class="text-blue-600 dark:text-blue-500"
+                              >
+                                <div class="flex items-center gap-2">
+                                  <i class="fa-solid fa-globe h-3 w-3 flex-shrink-0"></i>
+                                  <div
+                                    class="text-sm font-medium hover:underline truncate"
+                                    th:text="*{websiteLink}"
+                                  >Website</div>
+                                </div>
+                              </a>
+                            </div>
+                            <div
+                              th:if="*{linkedInLink} != null and *{linkedInLink} != ''"
+                            >
+                              <a
+                                th:href="*{linkedInLink}"
+                                target="_blank"
+                                class="text-blue-600 dark:text-blue-500"
+                              >
+                                <div class="flex items-center gap-2">
+                                  <i
+                                    class="fa-brands fa-linkedin h-3 w-3 flex-shrink-0"
+                                  ></i>
+                                  <div
+                                    class="text-sm font-medium hover:underline truncate"
+                                    th:text="*{linkedInLink}"
+                                  >LinkedIn</div>
+                                </div>
+                              </a>
+                            </div>
+                          </div>
+                        </td>
+
+                        <td class="px-4 py-4 min-w-[120px]">
+                          <div class="flex items-center gap-3">
+                            <a
+                              href="#"
+                              class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                              title="Edit"
+                              ><i class="fa-solid fa-pen h-4 w-4"></i
+                            ></a>
+                            <a
+                              href="#"
+                              class="font-medium text-red-600 dark:text-red-500 hover:underline"
+                              title="Delete"
+                              ><i class="fa-solid fa-trash h-4 w-4"></i
+                            ></a>
+                            <a
+                              href="#"
+                              class="font-medium text-green-600 dark:text-green-500 hover:underline"
+                              title="View"
+                              ><i class="fa-solid fa-eye h-4 w-4"></i
+                            ></a>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <script>
+      console.log("Hello from Profile Page");
+      
+      // Add search functionality
+      document.getElementById('table-search-users').addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const tableRows = document.querySelectorAll('tbody tr');
+        
+        tableRows.forEach(row => {
+          const name = row.querySelector('th div:first-child').textContent.toLowerCase();
+          const email = row.querySelector('th div:last-child').textContent.toLowerCase();
+          
+          if (name.includes(searchTerm) || email.includes(searchTerm)) {
+            row.style.display = '';
+          } else {
+            row.style.display = 'none';
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

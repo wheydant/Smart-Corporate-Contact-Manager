@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sccm.entities.User;
+import com.sccm.helpers.Helper;
 import static com.sccm.helpers.Helper.getEmailOfLoggedInUser;
+import com.sccm.services.ContactService;
 import com.sccm.services.UserService;
 
 
@@ -35,7 +38,7 @@ public class UserController {
     public String userProfile(Authentication authentication, Model model) {
         return "user/profile";
     }
-    //user add contact
+    //user add contact - added in contact controller
 
-    //user view contact
+    //user view contact - added in contact controller directly 
 }

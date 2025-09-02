@@ -366,3 +366,5 @@ dist
 .pnp.*
 
 /Secret
+
+*.properties
