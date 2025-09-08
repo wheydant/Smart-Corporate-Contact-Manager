@@ -1081,6 +1081,155 @@ File url is captured in the ContactController and saved in the DB.
     contactService.save(contact);
 ```
 
+## View Contact
+
+ContactController class is already mapped to
+
+```java
+    @Controller
+    @RequestMapping("/user/contacts")
+    public class ContactController {}
+```
+
+Thus to write function which will trigger for the above url we simply mention
+```java
+    @RequestMapping
+    public String viewContact()
+```
+
+### UI 
+Flowbite template -> table.
+
+**Looping contacts**
+
+>**Notes :** th:each acts as a for each loop within pageContent, declaring an th:object helps us to use the parameters of foreach variable freely. *{name} and all are the attributes of the pageContent.
+
+```html
+  <tr
+    th:object="${c}"
+    th:each="c : ${Contact}"
+    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
+  >
+    <th
+      scope="row"
+      class="flex items-center px-4 py-4 text-gray-900 whitespace-nowrap dark:text-white min-w-[200px]"
+    >
+      <img
+        class="w-10 h-10 rounded-full flex-shrink-0"
+        th:src="@{*{picture}}"
+        alt="Profile Image"
+        onerror="this.onerror=null;this.src='/images/profile.png';"
+      />
+      <div class="ps-3 min-w-0 flex-1">
+        <div class="flex items-center gap-2 flex-wrap">
+          <div class="text-base font-semibold truncate" th:text="*{name}">
+            Neil Sims
+          </div>
+          <i th:if="*{favorite}" class="fa-solid fa-heart text-red-500 text-sm"></i>
+        </div>
+        <div class="font-normal text-gray-500 truncate" th:text="*{email}">
+          contact@sccm.com
+        </div>
+      </div>
+  </th>
+```
+
+### Pagination
+
+**Note :** `org.springframework.data.domain` enables us to implement pagination easily. Page, Pageable, Sort, PageRequest all are part of this module
+
+**Contact Repo**
+
+We change findByUser of ContactRepo to return Page<Contact> and add Pageable to parameter list. `Page<Contact> findByUser(User user, Pageable pageable);`
+
+**Contact Service**
+
+Edit getByUser in ContactService Interface also to support above change. `Page<Contact> getByUser(User user, int page, int size, String sortField, String sortDirection);`
+
+**Contact Service Implementation**
+
+In its implementation we can sort data and it goes as followed -
+
+```java
+    @Override
+    public Page<Contact> getByUser(User user, int page, int size, String sortBy, String sortDirection) {
+        // TODO Auto-generated method stub
+        Sort sort = sortDirection.equals("desc")? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return contactRepo.findByUser(user, pageable);
+    }
+```
+
+
+**Contact Controller**
+
+Add the ParamValues and make a pageContact by using Contact Repo and pass to html. Default values are specified if html page doesn't pass required parameter.
+
+
+```java
+    @RequestMapping
+    public String viewContact(
+        @RequestParam(value="page", defaultValue="0") int page,
+        @RequestParam(value="size", defaultValue=AppConstant.PAGE_SIZE + "") int size,
+        @RequestParam(value ="sortBy", defaultValue="name") String sortBy,
+        @RequestParam(value="direction", defaultValue="asc") String direction,
+        Authentication authentication, Model model) {
+
+        //load all the user contact
+        String username = Helper.getEmailOfLoggedInUser(authentication);
+
+        User user = userService.getUserByEmail(username);
+
+        Page<Contact> pageContact = contactService.getByUser(user, page, size, sortBy, direction);
+
+        model.addAttribute("pageContact", pageContact);
+        
+        return "user/contacts";
+    }
+```
+
+pageContact has all the methods like getSize(), getTotalPages(), isFirst or isLast
+
+**contacts.html**
+
+We can't iterate over Page<Contact>, we use pageContact.content. `<tr th:object="${c}" th:each="c : ${pageContact.content}">` or `<tr th:object="${c}" th:each="c : ${pageContact.getContent()}">` methods can also be called.
+
+Add Pagination from  Flowbite and render the number of pages on the basis of pageContact
+
+>**Note :** `th:each="index : ${#numbers.sequence(0,pageContact.totalPages - 1)}"` for each 0 to n - 1 in Thymeleaf.
+
+>**Note :** `th:classappend="${index == pageContact.number? 'text-blue-700 bg-blue-100 hover:bg-blue-100 hover:text-blue-700 dark:bg-gray-900  dark:text-white' : ''}"` classAppend should be dominant than base class eg base class text-blue-600 then classappend only greater than text-blue-600 like text-blue-700 text-blue-800 will only override it.
+
+```html
+    <li
+      th:each="index : ${#numbers.sequence(0,pageContact.totalPages - 1)}"
+    >
+        <a
+            th:href="@{'/user/contacts?size=' + ${pageSize} +'&page='+${index}}"
+            th:classappend="${index == pageContact.number? 'text-blue-700 bg-blue-100 hover:bg-blue-100 hover:text-blue-700 dark:bg-gray-900  dark:text-white' : ''}"
+            ><span th:text="${index + 1}"></span
+        ></a>
+    </li>
+```
+
+To remove the next/prev arrow when we reach first or last page. pageContact.number represents current page
+
+```html
+    <li data-th-unless="${pageContact.last}">
+        <a
+            th:href="@{'/user/contacts?size=' + ${pageSize} +'&page='+${pageContact.number + 1}}"                  
+        >
+            <i class="fa-solid fa-arrow-right"></i>
+        </a>
+    </li>
+```
+
+**Browser**
+
+To test our pagination we can just append size page parameter in the url itself. https://localhost:8081/user/contacts?size=2&page=0&sortBy=email
+
+
 
 ## Important Annotations
 
@@ -1110,3 +1259,4 @@ File url is captured in the ContactController and saved in the DB.
 18. @Autowired - The @Autowired annotation in the Spring Framework facilitates automatic dependency injection. It instructs the Spring IoC (Inversion of Control) container to automatically resolve and inject collaborating beans into other beans. It is used when using components in a bean. In protection ready application constructor should be used
 19. @ControllerAdvice - Root controller everything written in this will be transferred to all the controllers.
 20. @ModelAttribute - All the models under the controller will get access to the model attribute mentioned in it.
+21. @RequestParam(value="page", defaultValue="0") - Parameters which will come from html rendered to controller rendering it basically GET url's parameter like `https://localhost:8081/user/contacts?size=2&page=0&sortBy=email` page value can be accessed using above example.

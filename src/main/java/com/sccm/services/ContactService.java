@@ -3,6 +3,9 @@ package com.sccm.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.sccm.entities.Contact;
 import com.sccm.entities.User;
 
@@ -18,9 +21,13 @@ public interface ContactService {
 
     void delete(String id);
 
-    List<Contact> search(String name, String email, String phoneNumber);
+    Page<Contact> searchByName(String name , int page, int size, String sortField, String sortDirection, User user);
+
+    Page<Contact> searchByEmail(String email, int page, int size, String sortField, String sortDirection, User user);
+
+    Page<Contact> searchByPhoneNumber(String phoneNumber, int page, int size, String sortField, String sortDirection, User user);
 
     List<Contact> getByUserId(String userId);
 
-    List<Contact> getByUser(User user);
+    Page<Contact> getByUser(User user, int page, int size, String sortField, String sortDirection);
 }
