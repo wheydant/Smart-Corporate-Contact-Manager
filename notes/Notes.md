@@ -1229,6 +1229,122 @@ To remove the next/prev arrow when we reach first or last page. pageContact.numb
 
 To test our pagination we can just append size page parameter in the url itself. https://localhost:8081/user/contacts?size=2&page=0&sortBy=email
 
+### Search with Pagination
+
+**ContactRepo**
+
+**Note :** Repository has predefined methods like `findBy<Column name>And<Column name>` and `findBy<Column name>And<Column name>Containing` for query with like etc. Where function parameter should be ordered and used `String namekeyword` eg. `Page<Contact> findByUserAndNameContaining(User user,String namekeyword, Pageable pageable);`
+
+Write its Service and its implementation in ContactService and ContactServiceImpl.
+
+**ContactController**
+
+Checks the type of field and call the ContactService function accordingly.
+
+**Html**
+
+1. Contacts
+    We pass GET request to the search URL. Input field's name will be the parameter present in url https://localhost:8081/user/contacts/search?keyword=<value>
+
+    ```html
+        <input
+            type="search"
+            id="search-input"
+            name="keyword"
+            placeholder="Search..."
+            required
+        />
+    ```
+
+2. Search
+    Renders new page based on the search.
+
+## API's creation & actions using AJAX
+
+### API Creation
+
+Create a new controller `ApiController` under sccm.controllers. Annote it with @RestController. A function returning an object can be mapped to an url.
+
+```java
+@RestController
+@RequestMapping("/api")
+public class ApiController {
+    @Autowired
+    private ContactService contactService;
+    //Get Contact
+    @GetMapping("/contacts/{contactId}")
+    public Contact getContact( @PathVariable String contactId) {
+        return contactService.getById(contactId);
+    }
+}
+```
+
+>**Note :** Contact Object has `@ManyToOne private User user;` declaration which will create an infinte loop for api to tackle this we add `@JsonIgnore` annotation to User.
+
+### View Contact
+
+Get HTML Modal from [Flowbite](https://flowbite.com/docs/components/modal/) and add it to the buttom of contacts page.
+
+[Html Markup Flowbite](https://flowbite.com/docs/components/modal/#html-markup) documentation explains how to trigger and manipulate modal. Make necessary addition to contact.js to render Modal.
+
+>**Note :** Import cannot be added.
+
+Mark the modal as fragment and add it to the contact and search html. contact_modal -> `<div data-th-fragment="contact_modal">` contact/search.html -> `<div th:replace="~{user/contact_modals :: contact_modal}"></div>`
+
+Passing Contact Id to the function in contact js from html can be done using thymeleaf. We first assign button an attribute value and then pass this attribute using thymeleaf onClick.Or we can directly use `th:onclick="loadContactdata([[${c.id}]])"`
+
+```html
+    <button
+        th:data-id="${c.id}"
+        th:onclick="loadContactdata(this.getAttribute(data-id))"
+    ></button>
+```
+
+Inserting data into modal in contact.js
+
+```js
+async function loadContactData(id) {
+    console.log("Loading contact:", id);
+
+    try {
+        const response = await fetch(`http://localhost:8081/api/contacts/${id}`);
+        if (!response.ok) throw new Error("Failed to fetch contact");
+        const data = await response.json();
+        console.log("Fetched contact data:", data);
+        document.getElementById("contact-name").textContent = data.name || "N/A";
+
+        openContactModal();
+    }catch (error) {
+        console.error("Error loading contact:", error);
+    }
+}
+```
+
+Async function needs to be used as a promise is returned rather than direct value. We have to wait for response thus using await. Again converting response to json we have to use await.
+
+
+### Delete contact
+
+**Two approaches**
+1. Using Backend
+2. Deletion api
+
+Using Backend we declared and controller function
+
+```java
+    @RequestMapping("/delete/{contactId}/{username}")
+    public String deleteContact(@PathVariable("contactId") String contactId,@PathVariable("username") String userName, HttpSession session) {
+        // contactService.delete(contactId);
+        session.setAttribute("message", Messages.builder().content("Contact "+userName+" deleted").type(MessageType.red).build());
+        return "redirect:/user/contacts";
+    }
+```
+
+And added delete button on the modal whose href value changes based on the modal value `document.getElementById("delete-contact-btn").href = `/user/contacts/delete/${data.id}/${data.name}`;`
+
+
+
+
 
 
 ## Important Annotations
@@ -1246,6 +1362,7 @@ To test our pagination we can just append size page parameter in the url itself.
 6. @Id - Makes the parameter as Primary Key.
 7. @Column(name="user_name", nullable=false) - Specify column attributes.
 8. @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true) / @ManyToOne - Mapping Anottations
+9. @JsonIgnore - Ignores the value when displaying value in API. Helps to eliminate an infinte loop
 9. @GeneratedValue(strategy = GenerationType.IDENTITY) - Auto - Increments the value of the paremeter to be inserted into table.
 10. @Enumerated(value = EnumType.STRING) Specifies column type as Enumerated i.e. restricting the values column can take.
 11. @ElementCollection(fetch = FetchType.EAGER) if we are using List as column.
@@ -1260,3 +1377,5 @@ To test our pagination we can just append size page parameter in the url itself.
 19. @ControllerAdvice - Root controller everything written in this will be transferred to all the controllers.
 20. @ModelAttribute - All the models under the controller will get access to the model attribute mentioned in it.
 21. @RequestParam(value="page", defaultValue="0") - Parameters which will come from html rendered to controller rendering it basically GET url's parameter like `https://localhost:8081/user/contacts?size=2&page=0&sortBy=email` page value can be accessed using above example.
+22. @PathVariable(value="page", defaultValue="0") - Direct access to url `@GetMapping("/contacts/{contactId}") public Contact getContact( @PathVariable String contactId)`. Everything after contacts/ is now parameter.
+23. @RestController - Marks a class as API class.

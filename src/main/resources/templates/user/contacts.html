@@ -35,6 +35,8 @@
                 page...
               </p>
             </div>
+            <!-- Message here -->
+            <div th:replace="~{message::messageBox}"></div>
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 
               <!-- Search Bar  -->
@@ -262,18 +264,20 @@
                             title="Edit"
                             ><i class="fa-solid fa-pen h-4 w-4"></i
                           ></a>
-                          <a
-                            href="#"
+                          <button
+                            th:data-id="${c.id}"
+                            th:onclick="loadContactData(this.getAttribute('data-id'))"
                             class="font-medium text-red-600 dark:text-red-500 hover:underline"
                             title="Delete"
                             ><i class="fa-solid fa-trash h-4 w-4"></i
-                          ></a>
-                          <a
-                            href="#"
+                          ></button>
+                          <button
+                            th:data-id="${c.id}"
+                            th:onclick="loadContactData(this.getAttribute('data-id'))"
                             class="font-medium text-green-600 dark:text-green-500 hover:underline"
                             title="View"
                             ><i class="fa-solid fa-eye h-4 w-4"></i
-                          ></a>
+                          ></button>
                         </div>
                       </td>
                     </tr>
@@ -314,68 +318,12 @@
             </div>
           </div>
         </div>
+        <div th:replace="~{user/contact_modals :: contact_modal}"></div>
       </div>
     </div>
     <script>
       console.log("Hello from Profile Page");
-
-      // Handle dropdown selection
-      document.querySelectorAll("#dropdown-search button").forEach((btn) => {
-        btn.addEventListener("click", function () {
-          const field = this.dataset.field;
-          const icon = this.dataset.icon;
-          const label = this.textContent.trim();
-
-          document.getElementById("search-field").value = field;
-          document.getElementById("search-label").textContent = label;
-          document.getElementById("search-icon").className =
-            "fa-solid " + icon + " h-4 w-4";
-
-          document.getElementById("dropdown-search").classList.add("hidden");
-        });
-      });
-
-      // Optional: Close dropdown on outside click
-      document.addEventListener("click", function (e) {
-        if (!document.getElementById("dropdown-button").contains(e.target)) {
-          document.getElementById("dropdown-search").classList.add("hidden");
-        }
-      });
-
-      // Handle form submit
-      /*document
-        .getElementById("contact-search-form")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
-          const field = document.getElementById("search-field").value;
-          const query = document.getElementById("search-input").value;
-          window.location.href = `/user/contacts/search?field=${field}&q=${encodeURIComponent(
-            query
-          )}`;
-        });*/
-
-      // Add search functionality
-      /*document
-        .getElementById("table-search-users")
-        .addEventListener("input", function (e) {
-          const searchTerm = e.target.value.toLowerCase();
-          const tableRows = document.querySelectorAll("tbody tr");
-
-          tableRows.forEach((row) => {
-            const name = row
-              .querySelector("th div:first-child")
-              .textContent.toLowerCase();
-            const email = row
-              .querySelector("th div:last-child")
-              .textContent.toLowerCase();
-
-            if (name.includes(searchTerm) || email.includes(searchTerm)) {
-              row.style.display = "";
-            } else {
-              row.style.display = "none";
-            }
-          });
-        });*/
     </script>
+    <script th:src="@{'/js/contacts.js'}"></script>
   </body>
 </html>

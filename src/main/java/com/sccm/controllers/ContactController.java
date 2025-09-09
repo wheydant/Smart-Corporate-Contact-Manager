@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -137,6 +138,7 @@ public class ContactController {
         @RequestParam(value="size", defaultValue=AppConstants.PAGE_SIZE + "") int size,
         // @RequestParam(value ="sortBy", defaultValue="name") String sortBy,
         @RequestParam(value="direction", defaultValue="asc") String direction,
+        HttpSession session,
         Authentication authentication, Model model
     ){
         logger.info("field {} keyword {}", field, value);
@@ -163,9 +165,23 @@ public class ContactController {
         model.addAttribute("keyword", value);
         model.addAttribute("field", field);
         model.addAttribute("pageSize", AppConstants.PAGE_SIZE);
+        //Add a message to save contact
+        if(pageContact.isEmpty()){
+            session.setAttribute("message", Messages.builder().content("0 results found where "+field+" is "+value).type(MessageType.red).build());
+        }else{
+            session.setAttribute("message", Messages.builder().content(pageContact.getTotalElements() + " results found where "+field+" is "+value).type(MessageType.green).build());
+        }
 
 
         return "user/search";
     }
+
+    @RequestMapping("/delete/{contactId}/{username}")
+    public String deleteContact(@PathVariable("contactId") String contactId,@PathVariable("username") String userName, HttpSession session) {
+        // contactService.delete(contactId);
+        session.setAttribute("message", Messages.builder().content("Contact "+userName+" deleted").type(MessageType.red).build());
+        return "redirect:/user/contacts";
+    }
+    
     
 }
