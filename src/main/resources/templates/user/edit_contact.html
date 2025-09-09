@@ -30,18 +30,19 @@
               <h5
                 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
               >
-                Add New Contact
+                Edit Contact
               </h5>
-              <p class="font-normal text-gray-500 dark:text-gray-300">
-                This contact will be stored on cloud, you can direct email this
-                client from SCCM...
-              </p>
+                <a
+                  th:href="@{'/user/contacts'}"
+                  class="text-blue-600 dark:text-blue-500 underline"
+                  >View All Contacts</a
+                >
             </div>
             <div>
               <!-- enctype="multipart/form-data" Allows the form to process images -->
               <form
                 class="mt-2"
-                th:action="@{'/user/contacts/add'}"
+                th:action="@{'/user/contacts/update/'+${contactId}}"
                 th:object="${contactForm}"
                 method="post"
                 enctype="multipart/form-data"
@@ -292,7 +293,7 @@
                       type="submit"
                       class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-full"
                     >
-                      Add Contact
+                      Edit Contact
                     </button>
                   </div>
                 </div>
