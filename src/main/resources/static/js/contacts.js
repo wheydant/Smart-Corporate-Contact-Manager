@@ -71,7 +71,7 @@ function closeContactModal(){
     contactModal.hide();
 }
 
-async function loadContactData(id) {
+async function loadContactData(id, action = "view") {
   console.log("Loading contact:", id);
 
   try {
@@ -116,6 +116,15 @@ async function loadContactData(id) {
       : "fa-regular fa-heart text-gray-400";
 
     document.getElementById("delete-contact-btn").href = `/user/contacts/delete/${data.id}/${data.name}`;
+
+    document.getElementById("edit-contact-btn").href = `/user/contacts/edit-view/${data.id}`;
+
+
+    // Delete button only for delete action
+    document.getElementById("delete-contact-wrapper").style.display = action === "delete" ? "block" : "none";
+
+    // Edit button only for edit action
+    document.getElementById("edit-contact-wrapper").style.display = action === "edit" ? "block" : "none";
 
     openContactModal();
   } catch (error) {

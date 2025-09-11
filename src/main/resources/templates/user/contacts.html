@@ -258,15 +258,16 @@
 
                       <td class="px-4 py-4 min-w-[120px]">
                         <div class="flex items-center gap-3">
-                          <a
-                            th:href="@{'/user/contacts/edit-view/'+*{id}}"
+                          <button
+                            th:data-id="${c.id}"
+                            th:onclick="loadContactData(this.getAttribute('data-id'), 'edit')"
                             class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                             title="Edit"
                             ><i class="fa-solid fa-pen h-4 w-4"></i
-                          ></a>
+                          ></button>
                           <button
                             th:data-id="${c.id}"
-                            th:onclick="loadContactData(this.getAttribute('data-id'))"
+                            th:onclick="loadContactData(this.getAttribute('data-id'), 'delete')"
                             class="font-medium text-red-600 dark:text-red-500 hover:underline"
                             title="Delete"
                             ><i class="fa-solid fa-trash h-4 w-4"></i

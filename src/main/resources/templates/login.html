@@ -24,6 +24,8 @@
                     </div>
 
                     <!-- Messages -->
+                    <!-- Message here -->
+                    <div th:replace="~{message::messageBox}"></div>
                     <div th:if="${param.error}" class="font-medium text-red-600 dark:text-red-400">
                         Invalid username and password.
                     </div>

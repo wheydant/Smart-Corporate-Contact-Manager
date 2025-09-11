@@ -79,6 +79,8 @@ public class User implements UserDetails{
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roleList = new ArrayList<>();
 
+    private String emailToken;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //We can return normal List of String we need Collection which extends GrantedAuthority 
@@ -94,6 +96,11 @@ public class User implements UserDetails{
     @Override
     public String getPassword() {
         return this.password;
+    }
+
+    @Override
+    public boolean isEnabled(){
+        return this.enabled;
     }
     
 }

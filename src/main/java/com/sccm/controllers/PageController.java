@@ -118,10 +118,10 @@ public class PageController {
         System.out.println("User Saved !");
 
         // Message alert using session
-        Messages message= Messages.builder().content("Registration Successful !").type(MessageType.green).build();
+        Messages message= Messages.builder().content("Registration Successful ! Email Verification sent to " + user.getEmail()).type(MessageType.green).build();
 
         session.setAttribute("message", message);
         
-        return "redirect:/register";
+        return "redirect:/login";
     }
 }

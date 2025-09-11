@@ -1342,8 +1342,181 @@ Using Backend we declared and controller function
 
 And added delete button on the modal whose href value changes based on the modal value `document.getElementById("delete-contact-btn").href = `/user/contacts/delete/${data.id}/${data.name}`;`
 
+### Edit Contact
+
+Added edit ContactServiceImpl. Copied add-contact to edit-contact-view. Trigger edit url from the form. Edit url handles the edit part.
 
 
+## Email verification
+
+### Disable account on sign up
+
+In securityConfig we add a failure configuration
+
+```java
+    formLogin.failureHandler((request, response, exception) ->{
+        HttpSession session = request.getSession();
+        if(exception instanceof DisabledException){
+            //user is disabled
+            session.setAttribute("message", Messages.builder().content("User is disables, Email with verification link is sent to your email id").type(MessageType.red).build());
+
+            response.sendRedirect("/login");
+            }else{
+                session.setAttribute("message", Messages.builder().content("Invalid Credentials").type(MessageType.red).build());
+                response.sendRedirect("/login");
+            }
+        }
+    );
+```
+
+DisabledException can be handled with Global exception handler with little modification. Spring security exceptions are difficult to handle globally as it does not come from mvc but are generated via controller. Filter and controller exceptions are different.
+
+### Sending Email using Mailstrap
+
+[Mailstrap](https://mailtrap.io/) allows us to send 1000 mails per month for free.
+
+Add [Spring Boot starter Mail dependency](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail)
+
+**Add Properties file**
+
+```java
+# Live
+# spring.mail.host=live.smtp.mailtrap.io
+# spring.mail.port=587
+# spring.mail.username=smtp@mailtrap.io
+# spring.mail.password=1aa14e0e7193dd18e312200d0e7ab207
+
+# Testing
+spring.mail.host=sandbox.smtp.mailtrap.io
+spring.mail.port=587
+spring.mail.username=79e0e689ac5355
+spring.mail.password=0537adaec4db7c
+
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+spring.mail.properties.from=sccm@demomailtrap.co
+```
+
+Live will send to actual email id, testing sandbox creates a virtual email box.
+
+**Service**
+
+Create EmailService and its implementation. 
+
+>**Note :** Implementation are always annoted with `@Service`.
+
+```java
+@Service
+public class EmailServiceImpl implements EmailService{
+    @Autowired
+    private JavaMailSender eMailSender;
+
+    @Value("${spring.mail.properties.from}")
+    private String mailFrom;
+    
+
+    @Override
+    public void sendEmail(String to, String subject, String body) {
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(body);
+        message.setFrom(mailFrom);
+
+        eMailSender.send(message);
+    }
+}
+```
+
+### Testing
+
+Under src/test/java com.sccm > SccmApplicationTests. Write a function to test the functionality of the email sender.
+
+```java
+@SpringBootTest
+class SccmApplicationTests {
+
+	@Autowired
+	private EmailService service;
+
+	@Test
+	void sendEmailTest(){
+		service.sendEmail("vedantkarlekar1@gmail.com", "Testing Email Service final configuration", "Hello from SCCM");
+	}
+
+}
+```
+
+Simply run the function and wait for the result
+
+### Verifing email
+
+**Email Token Creation**
+
+Add emailToken in User generate random emailToken at the time of user registration and save it. User.java `private String emailToken;` 
+
+Helper add a method to generate email verification link Helper, it can follow any pattern
+
+```java
+    public static String getLinkforEmailVerification(String emailToken){
+        String link = "http://localhost:8081/auth/verify-email?token=" + emailToken;
+        return link;
+    }
+```
+
+UserServiceImpl > saveUser generate emailToken, generate the verification link and send a email
+
+```java
+    String emailToken = UUID.randomUUID().toString();
+    String emailLink = Helper.getLinkforEmailVerification(emailToken);
+
+    user.setEmailToken(emailToken);
+
+    User savedUser = userRepo.save(user);
+
+    emailService.sendEmail(savedUser.getEmail(), "Verify account : Smart Corporate Contact Manager", emailLink);
+
+    return savedUser;
+```
+
+Create a controller to serve this url and fetch the token from DB and check if it matches with requestParam, add findByEmailToken in Repo `Optional<User> findByEmailToken(String token);`
+
+```java
+@Controller
+@RequestMapping("/auth")
+public class AuthController {
+
+    @Autowired
+    private UserRepo userRepo;
+
+    @GetMapping("/verify-email")
+    public String verifyEmail(@RequestParam("token") String token, HttpSession session, Model model) {
+
+        User user = userRepo.findByEmailToken(token).orElse(null);
+        Messages message = new Messages();
+
+        if(user != null){
+            if(user.getEmailToken().equals(token)){
+                user.setEmailVerified(true);
+                user.setEnabled(true);
+                userRepo.save(user);
+
+                message= Messages.builder().content("Email is verified").type(MessageType.green).build();
+            }
+        }else{
+            // Message alert using session
+            message= Messages.builder().content("Error in email verification").type(MessageType.red).build();
+        }
+
+        session.setAttribute("message", message);
+        
+        return "redirect:/login";
+    }
+    
+}
+```
 
 
 
@@ -1379,3 +1552,4 @@ And added delete button on the modal whose href value changes based on the modal
 21. @RequestParam(value="page", defaultValue="0") - Parameters which will come from html rendered to controller rendering it basically GET url's parameter like `https://localhost:8081/user/contacts?size=2&page=0&sortBy=email` page value can be accessed using above example.
 22. @PathVariable(value="page", defaultValue="0") - Direct access to url `@GetMapping("/contacts/{contactId}") public Contact getContact( @PathVariable String contactId)`. Everything after contacts/ is now parameter.
 23. @RestController - Marks a class as API class.
+24. @Value - To map the value of a variable comming from properties file. `@Value("${spring.mail.properties.from}")`

@@ -20,4 +20,6 @@ public interface UserRepo extends JpaRepository<User, String>{
 
     //We can also add combination of two attributes
     Optional<User> findByEmailAndPassword(String email, String Password);
+
+    Optional<User> findByEmailToken(String token);
 }

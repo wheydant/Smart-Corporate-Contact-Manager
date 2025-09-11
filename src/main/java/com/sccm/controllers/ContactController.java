@@ -178,7 +178,7 @@ public class ContactController {
 
     @RequestMapping("/delete/{contactId}/{username}")
     public String deleteContact(@PathVariable("contactId") String contactId,@PathVariable("username") String userName, HttpSession session) {
-        // contactService.delete(contactId);
+        contactService.delete(contactId);
         session.setAttribute("message", Messages.builder().content("Contact "+userName+" deleted").type(MessageType.red).build());
         return "redirect:/user/contacts";
     }
@@ -194,8 +194,7 @@ public class ContactController {
         contactForm.setAddress(contact.getAddress());
         contactForm.setDescription(contact.getDescription());
         contactForm.setFavorite(contact.getFavorite());
-        contactForm.setWebsiteLink(contact.getName());
-        contactForm.setName(contact.getWebsiteLink());
+        contactForm.setWebsiteLink(contact.getWebsiteLink());
         contactForm.setLinkedInLink(contact.getLinkedInLink());
 
         model.addAttribute("contactForm",contactForm);
@@ -207,7 +206,8 @@ public class ContactController {
     public String updateContact(@PathVariable("contactId") String contactId,
             @Valid @ModelAttribute ContactForm contactForm,
             BindingResult bindingResult,
-            Model model) {
+            Model model,
+            HttpSession session) {
 
         // update the contact
         if (bindingResult.hasErrors()) {
@@ -240,7 +240,7 @@ public class ContactController {
         var updateCon = contactService.update(con);
         logger.info("updated contact {}", updateCon);
 
-        model.addAttribute("message", Messages.builder().content("Contact Updated !!").type(MessageType.green).build());
+        session.setAttribute("message", Messages.builder().content("Contact "+con.getName()+" updated").type(MessageType.green).build());
 
         return "redirect:/user/contacts";
     }

@@ -4,16 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import com.sccm.helpers.MessageType;
+import com.sccm.helpers.Messages;
 import com.sccm.services.implementation.SecurityCustomUserDetailService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Configuration
 public class SecurityConfig {
@@ -99,6 +102,20 @@ public class SecurityConfig {
             //     }
             // })
             ;
+
+
+            formLogin.failureHandler((request, response, exception) ->{
+                HttpSession session = request.getSession();
+                if(exception instanceof DisabledException){
+                    //user is disabled
+                    session.setAttribute("message", Messages.builder().content("User is disables, Email with verification link is sent to your email id").type(MessageType.red).build());
+
+                    response.sendRedirect("/login");
+                }else{
+                    session.setAttribute("message", Messages.builder().content("Invalid Credentials").type(MessageType.red).build());
+                    response.sendRedirect("/login");
+                }
+            });
         });
 
         //Disable CSRF token so that we can logout using default functionality
