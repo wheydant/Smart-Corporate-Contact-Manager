@@ -1383,14 +1383,14 @@ Add [Spring Boot starter Mail dependency](https://mvnrepository.com/artifact/org
 # Live
 # spring.mail.host=live.smtp.mailtrap.io
 # spring.mail.port=587
-# spring.mail.username=smtp@mailtrap.io
-# spring.mail.password=1aa14e0e7193dd18e312200d0e7ab207
+# spring.mail.username=
+# spring.mail.password=
 
 # Testing
 spring.mail.host=sandbox.smtp.mailtrap.io
 spring.mail.port=587
-spring.mail.username=79e0e689ac5355
-spring.mail.password=0537adaec4db7c
+spring.mail.username=
+spring.mail.password=
 
 spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
@@ -1517,6 +1517,18 @@ public class AuthController {
     
 }
 ```
+
+## Sidebar and Home page
+
+TODO
+
+- User Controller Setting i.e. Edit
+- Home screen and About us
+
+## Deployement
+
+
+
 
 
 

@@ -1,14 +1,478 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="~{base::parent(~{::#content},'Services', ~{})}">
-    <!-- Empty parameters represents default  -->
-    <head>
-        <title>Services Page</title>
-    </head>
-    <body>
-        <div id="content">
-            <h1>Services Page</h1>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque deleniti ipsam harum consequuntur ut voluptatem? Earum, delectus, praesentium distinctio, repellat nihil rerum accusamus ipsa at nobis amet ipsum repudiandae soluta! Quibusdam, unde delectus. Exercitationem molestiae delectus quas molestias quisquam neque quibusdam fuga voluptates sequi. Adipisci obcaecati delectus fugiat totam a?</p>
+<html lang="en" th:replace="~{base::parent(~{::#content},'Our Services - SCCM', ~{::script})}">
+<head>
+    <title>Our Services - Smart Corporate Contact Manager</title>
+</head>
+<body>
+    <div id="content" class="min-h-screen">
+        <!-- Hero Section -->
+        <div class="relative bg-gradient-to-br from-purple-900 via-blue-800 to-indigo-900 py-20">
+            <div class="absolute inset-0 bg-black opacity-20"></div>
+            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h1 class="text-4xl md:text-6xl font-bold dark:text-white mb-6">Our Services</h1>
+                    <p class="text-xl md:text-2xl text-blue-600 dark:text-blue-100 max-w-4xl mx-auto">
+                        Comprehensive corporate networking solutions designed to accelerate your professional growth
+                    </p>
+                </div>
+            </div>
         </div>
-        <script>console.log("Hello from Services")</script>
-    </body>
+
+        <!-- Core Services -->
+        <div class="py-20 bg-white dark:bg-gray-900">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                        Core Services
+                    </h2>
+                    <p class="text-xl text-gray-600 dark:text-gray-300">
+                        Everything you need to manage and grow your corporate network
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <!-- Smart Contact Management -->
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900 dark:to-indigo-900 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <div class="flex items-start space-x-6">
+                            <div class="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Smart Contact Management</h3>
+                                <p class="text-gray-600 dark:text-gray-300 mb-6">
+                                    Store, organize, and manage your corporate contacts with intelligent categorization and advanced search capabilities.
+                                </p>
+                                <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                                    <li class="flex items-center">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        Unlimited contact storage
+                                    </li>
+                                    <li class="flex items-center">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        Advanced filtering and search
+                                    </li>
+                                    <li class="flex items-center">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        Custom tags and categories
+                                    </li>
+                                    <li class="flex items-center">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        Import/Export capabilities
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Direct Email Integration -->
+                    <div class="bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900 dark:to-emerald-900 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <div class="flex items-start space-x-6">
+                            <div class="w-16 h-16 bg-green-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Direct Email Integration</h3>
+                                <p class="text-gray-600 dark:text-gray-300 mb-6">
+                                    Send emails directly from the platform with templates, scheduling, and tracking capabilities.
+                                </p>
+                                <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                                    <li class="flex items-center">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        One-click email sending
+                                    </li>
+                                    <li class="flex items-center">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        Email templates library
+                                    </li>
+                                    <li class="flex items-center">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        Bulk email campaigns
+                                    </li>
+                                    <li class="flex items-center">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        Email tracking & analytics
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Features -->
+        <div class="py-20 bg-gray-50 dark:bg-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                        Upcoming Features
+                    </h2>
+                    <p class="text-xl text-gray-600 dark:text-gray-300">
+                        Revolutionary features coming soon to enhance your networking experience
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- AI Recommendations -->
+                    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-purple-600 text-white px-3 py-1 text-xs font-semibold rounded-bl-lg">
+                            COMING SOON
+                        </div>
+                        <div class="w-14 h-14 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-7 h-7 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">AI-Powered Recommendations</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            Get intelligent suggestions for new connections based on your organization, industry, and networking patterns.
+                        </p>
+                        <ul class="text-sm text-gray-500 dark:text-gray-400 space-y-1">
+                            <li>• Smart connection matching</li>
+                            <li>• Industry trend analysis</li>
+                            <li>• Networking opportunity alerts</li>
+                        </ul>
+                    </div>
+
+                    <!-- Job Opportunities -->
+                    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-red-600 text-white px-3 py-1 text-xs font-semibold rounded-bl-lg">
+                            COMING SOON
+                        </div>
+                        <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-7 h-7 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0H8m8 0v2a2 2 0 01-2 2H10a2 2 0 01-2-2V6m8 0V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Job Opportunity Discovery</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            Discover relevant job openings through advanced web scraping technology from multiple job platforms.
+                        </p>
+                        <ul class="text-sm text-gray-500 dark:text-gray-400 space-y-1">
+                            <li>• Multi-platform job aggregation</li>
+                            <li>• Personalized job matching</li>
+                            <li>• Real-time opportunity alerts</li>
+                        </ul>
+                    </div>
+
+                    <!-- Network Analytics -->
+                    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-indigo-600 text-white px-3 py-1 text-xs font-semibold rounded-bl-lg">
+                            COMING SOON
+                        </div>
+                        <div class="w-14 h-14 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-7 h-7 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Advanced Network Analytics</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            Gain deep insights into your professional network with comprehensive analytics and visualization tools.
+                        </p>
+                        <ul class="text-sm text-gray-500 dark:text-gray-400 space-y-1">
+                            <li>• Network relationship mapping</li>
+                            <li>• Connection strength analysis</li>
+                            <li>• Industry distribution charts</li>
+                        </ul>
+                    </div>
+
+                    <!-- Smart Calendar Integration -->
+                    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-blue-600 text-white px-3 py-1 text-xs font-semibold rounded-bl-lg">
+                            COMING SOON
+                        </div>
+                        <div class="w-14 h-14 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-7 h-7 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Smart Calendar Integration</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            Seamlessly integrate with your calendar for automated meeting scheduling and follow-up reminders.
+                        </p>
+                        <ul class="text-sm text-gray-500 dark:text-gray-400 space-y-1">
+                            <li>• Automated meeting scheduling</li>
+                            <li>• Smart follow-up reminders</li>
+                            <li>• Calendar sync across platforms</li>
+                        </ul>
+                    </div>
+
+                    <!-- Mobile Application -->
+                    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-green-600 text-white px-3 py-1 text-xs font-semibold rounded-bl-lg">
+                            COMING SOON
+                        </div>
+                        <div class="w-14 h-14 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-7 h-7 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a1 1 0 001-1V4a1 1 0 00-1-1H8a1 1 0 00-1 1v16a1 1 0 001 1z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Native Mobile App</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            Access your corporate network on-the-go with our upcoming native mobile applications for iOS and Android.
+                        </p>
+                        <ul class="text-sm text-gray-500 dark:text-gray-400 space-y-1">
+                            <li>• iOS & Android support</li>
+                            <li>• Offline access capability</li>
+                            <li>• Push notifications</li>
+                        </ul>
+                    </div>
+
+                    <!-- API Integration -->
+                    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-red-600 text-white px-3 py-1 text-xs font-semibold rounded-bl-lg">
+                            COMING SOON
+                        </div>
+                        <div class="w-14 h-14 bg-red-100 dark:bg-red-900 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-7 h-7 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Third-Party Integrations</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            Connect with popular business tools and platforms through our comprehensive API integration suite.
+                        </p>
+                        <ul class="text-sm text-gray-500 dark:text-gray-400 space-y-1">
+                            <li>• CRM system integration</li>
+                            <li>• LinkedIn sync</li>
+                            <li>• Slack notifications</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service Plans -->
+        <div class="py-20 bg-white dark:bg-gray-900">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                        Choose Your Plan
+                    </h2>
+                    <p class="text-xl text-gray-600 dark:text-gray-300">
+                        Select the perfect plan for your networking needs
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <!-- Starter Plan -->
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700">
+                        <div class="text-center mb-8">
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Starter</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">Perfect for individual professionals</p>
+                            <div class="text-4xl font-bold text-gray-900 dark:text-white">
+                                Free
+                            </div>
+                        </div>
+                        
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-600 dark:text-gray-300">Up to 100 contacts</span>
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-600 dark:text-gray-300">Basic email integration</span>
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-600 dark:text-gray-300">Standard support</span>
+                            </li>
+                        </ul>
+                        
+                        <button class="w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-semibold py-3 px-6 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200">
+                            Get Started
+                        </button>
+                    </div>
+
+                    <!-- Professional Plan -->
+                    <div class="bg-blue-50 dark:bg-blue-900 rounded-2xl p-8 border-2 border-blue-500 relative">
+                        <div class="absolute top-0 right-8 transform -translate-y-1/2">
+                            <span class="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                                POPULAR
+                            </span>
+                        </div>
+                        
+                        <div class="text-center mb-8">
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Professional</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">For growing businesses</p>
+                            <div class="text-4xl font-bold text-blue-600 dark:text-blue-400">
+                                $19<span class="text-lg text-gray-600 dark:text-gray-300">/month</span>
+                            </div>
+                        </div>
+                        
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-600 dark:text-gray-300">Unlimited contacts</span>
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-600 dark:text-gray-300">Advanced email features</span>
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-600 dark:text-gray-300">AI recommendations</span>
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-600 dark:text-gray-300">Priority support</span>
+                            </li>
+                        </ul>
+                        
+                        <button class="w-full bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                            Start Free Trial
+                        </button>
+                    </div>
+
+                    <!-- Enterprise Plan -->
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700">
+                        <div class="text-center mb-8">
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Enterprise</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">For large organizations</p>
+                            <div class="text-4xl font-bold text-gray-900 dark:text-white">
+                                Custom
+                            </div>
+                        </div>
+                        
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-600 dark:text-gray-300">Everything in Professional</span>
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-600 dark:text-gray-300">Custom integrations</span>
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-600 dark:text-gray-300">Dedicated account manager</span>
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-600 dark:text-gray-300">24/7 phone support</span>
+                            </li>
+                        </ul>
+                        
+                        <button class="w-full bg-purple-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-purple-700 transition-colors duration-200">
+                            Contact Sales
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold dark:text-white mb-4">
+                    Ready to Transform Your Networking?
+                </h2>
+                <p class="text-xl text-blue-600 dark:text-blue-100 mb-8 max-w-2xl mx-auto">
+                    Join thousands of professionals who are already using SCCM to grow their corporate networks.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="/register" class="inline-flex items-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-lg">
+                        Start Free Trial
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                        </svg>
+                    </a>
+                    <a href="/contact" class="inline-flex items-center px-8 py-4 bg-transparent border-2 border-white dark:text-white font-semibold rounded-lg hover:bg-white bg-gray-500 hover:text-blue-600 transition-all duration-200">
+                        Contact Sales
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log("SCCM Services Page Loaded");
+        
+        // Add smooth animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Initialize animation styles and observe elements
+        document.querySelectorAll('.bg-white, .bg-gradient-to-br, .grid > div').forEach((element, index) => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(30px)';
+            element.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+            observer.observe(element);
+        });
+
+        // Add hover effects to service cards
+        document.querySelectorAll('.shadow-lg').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+                this.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)';
+            });
+        });
+
+        // Add sparkle effect to "COMING SOON" badges
+        document.querySelectorAll('.absolute.top-0.right-0').forEach(badge => {
+            setInterval(() => {
+                badge.style.animation = 'pulse 2s ease-in-out infinite';
+            }, 3000);
+        });
+    </script>
+</body>
 </html>

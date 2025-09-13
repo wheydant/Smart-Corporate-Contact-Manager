@@ -72,6 +72,7 @@
               <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none" th:text="${loggedInUser?.email ?: 'user@example.com'}">
                 user@example.com
               </p>
+              <!-- <p th:text="${loggedInUser?.userId ?: 'user@example.com'}"></p> -->
             </div>
             <ul class="py-1" role="none">
               <li>
@@ -85,11 +86,11 @@
               </li>
               <li>
                 <a
-                  th:href="@{/user/settings}"
+                  th:href="@{/user/settings-view}"
                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                   role="menuitem"
                 >
-                  <i class="fa-solid fa-cog mr-2"></i>Settings
+                  <i class="fa-solid fa-cog mr-2"></i>Setting
                 </a>
               </li>
               <li>
@@ -161,7 +162,7 @@
           </a>
         </li>
 
-        <!-- Search Contacts -->
+        <!-- Search Contacts
         <li>
           <a
             th:href="@{/user/search}"
@@ -173,7 +174,7 @@
             </svg>
             <span class="ms-3">Search Contacts</span>
           </a>
-        </li>
+        </li> -->
 
         <!-- Profile -->
         <li>
@@ -192,7 +193,7 @@
         <!-- Settings -->
         <li>
           <a
-            th:href="@{/user/settings}"
+            th:href="@{/user/setting/{id}(id=${loggedInUser.userId})}"
             th:classappend="${currentPath == '/user/settings'} ? 'bg-blue-700 text-white' : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'"
             class="flex items-center p-2 rounded-lg group"
           >
