@@ -1,4 +1,8 @@
-console.log("Contact.js")
+console.log("Contact.js");
+
+// var BASE_URL = 'http://localhost:8081';
+var BASE_URL = 'http://SmartCorporateContactManager.ap-south-1.elasticbeanstalk.com';
+
 
 // Handle dropdown selection
 document.querySelectorAll("#dropdown-search button").forEach((btn) => {
@@ -75,7 +79,7 @@ async function loadContactData(id, action = "view") {
   console.log("Loading contact:", id);
 
   try {
-    const response = await fetch(`http://localhost:8081/api/contacts/${id}`);
+    const response = await fetch(`${BASE_URL}/api/contacts/${id}`);
     if (!response.ok) throw new Error("Failed to fetch contact");
     const data = await response.json();
     console.log("Fetched contact data:", data);

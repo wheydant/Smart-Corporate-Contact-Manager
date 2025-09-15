@@ -1525,12 +1525,135 @@ TODO
 - User Controller Setting i.e. Edit
 - Home screen and About us
 
-## Deployement
+## Deployement using AWS
+
+### Basic Beanstack application
+
+### EC2
+
+Creating own EC2 instance is an hassel as we need download everything tomcat, mySQL and need to configure it.
+
+### Roles
+
+For EC2
+
+Create a role add
+1. AWS Elastic Bean Stalk Web tier
+2. AWS Elastic Bean Stalk Worker tier
+3. AWS Elastic Bean Stalk Multicontainer Docker
+
+### Elastic Beanstack
+
+Deploy and scale webservices. Just upload the code and automatically handles deployement. It actually uses EC2 instance in the background.
+
+1. Configure Enviornment normal settings. 
+2. In service access add the roles created.
+3. Set up networking, database and tags
+    - VPC choose a VPC
+    - Choose IP address
+
+4. Configure Instance traffic keep it as it is
+5. Monitorning health => basic, Manage deactivate it.
+
+### Deploying SCCM
+
+Make application.properties deployement ready replace the values with enviornment variables every variable must be change ideally
+
+Comment out test cases
+
+Create a dummy user who dont need login 
+
+com.sccm > SccmApplication
+
+```java
+@SpringBootApplication
+public class SccmApplication implements CommandLineRunner{
+
+	public static void main(String[] args) {
+		SpringApplication.run(SccmApplication.class, args);
+	}
+
+	@Autowired
+	private UserRepo userRepo;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	@Override
+	public void run(String... args) throws Exception {
+		User user = new User();
+		user.setUserId(UUID.randomUUID().toString());
+		user.setName("admin");
+		user.setEmail("admin@gmail.com");
+		user.setPassword(passwordEncoder.encode("admin"));
+		user.setRoleList(List.of(AppConstants.ROLE_USER));
+		user.setEmailVerified(true);
+		user.setEnabled(true);
+		user.setAbout("This is dummy user created initially");
+		user.setPhoneVerified(true);
+
+		userRepo.findByEmail("admin@gmail.com").ifPresentOrElse(user1 -> {},() -> {
+			userRepo.save(user);
+			System.out.println("user created");
+		});
+	}
+}
+```
+
+Right click sccm > maven > run maven command > package
+
+Under target snapshot is being created, upload that certificate in elastic beanstalk.
+
+Elastic beanstalk automatically in the backend creates an EC2 instance, a DB whose name is always `ebdb` and its host needs to be fetched once its creates add that name to the Enviornment variable after everything site is running.
+
+>**Note :** http://smartcorporatecontactmanager.ap-south-1.elasticbeanstalk.com
 
 
 
 
+## Domain name
 
+We can use AWS route 53 to manage DNS and Domain name registration, but we can also do it in domain provider also.
+
+### Hostinger
+
+Go to beanstack and fetch the URL
+
+**DNS server**
+
+Add type CNAME name @ and point to url(without http://) from bean stack, do the same for CNAME www. ALIAS @ url. Remove any records with A.
+
+
+### Route 53
+
+Create hosted zone and do the mapping
+
+
+## SSL certificate
+
+Search certificate in AWS console and create a certificate add url and *.sccm.com so that all subdomains are covered choose to DNS verification method.
+
+It will generate a CNAME we need to add it where we have added DNS server configuration hostinger or route s3 we have to add the value too.
+
+### Installing certificate into Application
+
+Bean Stack > Application > Configuration > Load Balancer > Edit > Auto scalling group > Load balanced , Min 1 Max 1, Listner Port 443, Https and select the certificate created.
+
+We can use cloud fare for certificate also.
+
+## Redirect HTTP to HTTPS
+
+Bean Stack > Load Balancer > After certiciate installation it will have two ports HTTP and HTTPS > HTTP > Action > Default Actions > Redirect URL > HTTPS 443 > Save
+
+It will automatically redirected to https.
+
+Change the BASE_URL in all the code where we used http to https
+
+## Whats next
+
+Integrate webscrapping user recommendation etc.
+
+In the video playlist he is teching how to convert the application into API based application only for backend so that it can be integrated onto any frontend application layout.
 
 ## Important Annotations
 

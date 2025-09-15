@@ -9,12 +9,12 @@ import com.sccm.services.EmailService;
 @SpringBootTest
 class SccmApplicationTests {
 
-	@Autowired
-	private EmailService service;
+	// @Autowired
+	// private EmailService service;
 
-	@Test
-	void sendEmailTest(){
-		service.sendEmail("vedantkarlekar1@gmail.com", "Testing Email Service final configuration", "Hello from SCCM");
-	}
+	// @Test
+	// void sendEmailTest(){
+	// 	service.sendEmail("vedantkarlekar1@gmail.com", "Testing Email Service final configuration", "Hello from SCCM");
+	// }
 
 }

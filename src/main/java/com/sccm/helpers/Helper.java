@@ -33,7 +33,7 @@ public class Helper {
     }
 
     public static String getLinkforEmailVerification(String emailToken){
-        String link = "http://localhost:8081/auth/verify-email?token=" + emailToken;
+        String link = "http://SmartCorporateContactManager.ap-south-1.elasticbeanstalk.com/auth/verify-email?token=" + emailToken;
         return link;
     }
 }
